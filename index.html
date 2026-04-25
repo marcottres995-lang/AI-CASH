@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Cash – Cómo Ganar Dinero con Inteligencia Artificial en 2026</title>
+  <meta name="description" content="Descubre estrategias reales, herramientas y oportunidades para ganar dinero con inteligencia artificial en 2026." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.5.0/remixicon.min.css">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Inter', sans-serif; background: #000; color: #fff; -webkit-font-smoothing: antialiased; }
+    a { text-decoration: none; color: inherit; }
+    ul { list-style: none; }
+    img { max-width: 100%; display: block; }
+    /* Liquid Glass */
+    .liquid-glass {
+      background: rgba(0,0,0,0.4);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+      box-shadow: inset 0 1px 1px rgba(255,255,255,0.1);
+    }
+    /* Navbar */
+    .navbar {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 50;
+      transition: all 0.5s ease;
+    }
+    .navbar.scrolled {
+      background: rgba(0,0,0,0.4);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+    .nav-container {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 20px 24px 16px;
+      max-width: 1400px; margin: 0 auto;
+    }
+    .logo { display: flex; align-items: center; gap: 8px; }
+    .logo img { height: 32px; width: 32px; object-fit: contain; border-radius: 4px; }
+    .logo span { font-weight: 600; font-size: 14px; letter-spacing: 0.15em; text-transform: uppercase; }
+    .nav-links { display: none; gap: 32px; }
+    .nav-links a { color: rgba(255,255,255,0.7); font-size: 14px; font-weight: 500; letter-spacing: 0.05em; transition: color 0.2s; white-space: nowrap; }
+    .nav-links a:hover { color: #fff; }
+    .nav-cta {
+      display: none; align-items: center; gap: 8px;
+      padding: 8px 20px; border-radius: 9999px;
+      background: #fff; color: #000; font-size: 14px; font-weight: 600; letter-spacing: 0.05em;
+      transition: background 0.2s; white-space: nowrap;
+    }
+    .nav-cta:hover { background: rgba(255,255,255,0.9); }
+    .hamburger {
+      display: flex; align-items: center; justify-content: center;
+      width: 36px; height: 36px; color: #fff; background: none; border: none; cursor: pointer;
+    }
+    .mobile-menu {
+      display: none; padding: 12px 24px 20px;
+      background: rgba(0,0,0,0.4);
+      backdrop-filter: blur(4px);
+      border-top: 1px solid rgba(255,255,255,0.1);
+    }
+    .mobile-menu.active { display: flex; flex-direction: column; gap: 16px; }
+    .mobile-menu a { color: rgba(255,255,255,0.7); font-size: 14px; font-weight: 500; }
+    .mobile-cta {
+      margin-top: 8px; display: inline-flex; justify-content: center;
+      padding: 8px 20px; border-radius: 9999px;
+      background: #fff; color: #000; font-size: 14px; font-weight: 600;
+    }
+    /* Hero */
+    .hero {
+      position: relative; width: 100%; min-height: 100vh;
+      display: flex; flex-direction: column;
+    }
+    .hero-video {
+      position: absolute; inset: 0; width: 100%; height: 100%;
+      object-fit: cover; z-index: 0;
+    }
+    .hero-content {
+      position: relative; z-index: 10;
+      flex: 1; display: flex; flex-direction: column; justify-content: center;
+      padding: 128px 24px 80px;
+      max-width: 1400px; margin: 0 auto; width: 100%;
+    }
+    .eyebrow {
+      display: inline-flex; align-items: center; gap: 8px;
+      margin-bottom: 24px; padding: 6px 16px;
+      border-radius: 9999px; border: 1px solid rgba(255,255,255,0.15);
+      font-size: 12px; font-weight: 500; letter-spacing: 0.15em; text-transform: uppercase;
+      color: rgba(255,255,255,0.6); width: fit-content;
+    }
+    .pulse { width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,0.6); animation: pulse 2s infinite; }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.5} }
+    .hero h1 {
+      font-size: 48px; font-weight: 600; line-height: 1.1; letter-spacing: -0.02em;
+    }
+    .hero h1 span { display: block; }
+    .hero h1 .char {
+      display: inline-block; opacity: 0; transform: translateX(-18px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+    .hero h1 .char.visible { opacity: 1; transform: translateX(0); }
+    .hero-sub {
+      margin-top: 24px; font-size: 18px; font-weight: 300;
+      color: rgba(255,255,255,0.6); max-width: 500px; line-height: 1.6;
+      opacity: 0; transform: translateY(14px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .hero-sub.visible { opacity: 1; transform: translateY(0); }
+    .hero-buttons {
+      margin-top: 40px; display: flex; flex-direction: column; align-items: flex-start; gap: 12px;
+      opacity: 0; transform: translateY(14px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .hero-buttons.visible { opacity: 1; transform: translateY(0); }
+    .btn-primary {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 14px 28px; border-radius: 9999px;
+      background: #fff; color: #000; font-size: 14px; font-weight: 600; letter-spacing: 0.05em;
+      transition: background 0.2s; white-space: nowrap;
+    }
+    .btn-primary:hover { background: rgba(255,255,255,0.9); }
+    .btn-secondary {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 14px 28px; border-radius: 9999px;
+      border: 1px solid rgba(255,255,255,0.2); color: #fff;
+      font-size: 14px; font-weight: 500; letter-spacing: 0.05em;
+      transition: border-color 0.2s; white-space: nowrap;
+    }
+    .btn-secondary:hover { border-color: rgba(255,255,255,0.4); }
+    .hero-tag {
+      margin-top: 40px; font-size: 12px; letter-spacing: 0.25em; text-transform: uppercase;
+      font-weight: 500; color: rgba(255,255,255,0.3);
+      opacity: 0; transform: translateY(14px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .hero-tag.visible { opacity: 1; transform: translateY(0); }
+    .scroll-indicator {
+      position: relative; z-index: 10;
+      display: flex; justify-content: center; padding-bottom: 32px;
+    }
+    .scroll-indicator > div {
+      display: flex; flex-direction: column; align-items: center; gap: 8px;
+      color: rgba(255,255,255,0.3);
+    }
+    .scroll-indicator span { font-size: 12px; letter-spacing: 0.15em; text-transform: uppercase; font-weight: 300; }
+    .bounce { animation: bounce 2s infinite; }
+    @keyframes bounce { 0%,20%,50%,80%,100%{transform:translateY(0)} 40%{transform:translateY(-8px)} 60%{transform:translateY(-4px)} }
+    /* Features */
+    .features { padding: 96px 24px; max-width: 1400px; margin: 0 auto; }
+    .features-header { max-width: 600px; margin-bottom: 64px; }
+    .features-header p.label { font-size: 12px; font-weight: 500; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(255,255,255,0.3); margin-bottom: 12px; }
+    .features-header h2 { font-size: 40px; font-weight: 600; line-height: 1.15; }
+    .features-header h2 span { color: rgba(255,255,255,0.4); }
+    .features-header > p { margin-top: 16px; font-size: 16px; font-weight: 300; color: rgba(255,255,255,0.45); line-height: 1.6; max-width: 500px; }
+    .features-grid {
+      display: grid; grid-template-columns: 1fr; gap: 16px;
+    }
+    .feature-card {
+      padding: 24px; border-radius: 16px;
+      border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.03);
+      transition: all 0.3s ease; cursor: default;
+      opacity: 0; transform: translateY(24px);
+    }
+    .feature-card.visible { opacity: 1; transform: translateY(0); transition: opacity 0.6s ease, transform 0.6s ease, border-color 0.3s, background 0.3s; }
+    .feature-card:hover { border-color: rgba(255,255,255,0.25); background: rgba(255,255,255,0.06); }
+    .feature-tag {
+      display: inline-block; margin-bottom: 16px; padding: 4px 10px;
+      border-radius: 9999px; background: rgba(255,255,255,0.1);
+      font-size: 12px; font-weight: 500; letter-spacing: 0.05em; color: rgba(255,255,255,0.5);
+    }
+    .feature-icon {
+      display: flex; align-items: center; justify-content: center;
+      width: 44px; height: 44px; margin-bottom: 16px;
+      border-radius: 12px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
+      transition: border-color 0.3s;
+    }
+    .feature-card:hover .feature-icon { border-color: rgba(255,255,255,0.2); }
+    .feature-icon i { font-size: 20px; color: rgba(255,255,255,0.7); }
+    .feature-card h3 { font-size: 16px; font-weight: 600; margin-bottom: 8px; line-height: 1.3; }
+    .feature-card p { font-size: 14px; font-weight: 300; color: rgba(255,255,255,0.45); line-height: 1.6; }
+    .feature-link {
+      margin-top: 20px; display: flex; align-items: center; gap: 4px;
+      font-size: 12px; font-weight: 500; color: rgba(255,255,255,0.3);
+      transition: color 0.3s;
+    }
+    .feature-card:hover .feature-link { color: rgba(255,255,255,0.6); }
+    /* Ads */
+    .ads { padding: 24px; max-width: 1400px; margin: 0 auto; }
+    .ads-box {
+      height: 96px; border-radius: 12px; background: #1f2937;
+      border: 1px solid rgba(255,255,255,0.05);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .ads-box span { color: rgba(255,255,255,0.2); font-size: 14px; font-weight: 500; letter-spacing: 0.15em; text-transform: uppercase; }
+    /* Foo
+
