@@ -2,113 +2,169 @@
 
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AI Cash</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Cash PRO</title>
 
-  <script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.tailwindcss.com"></script>
 
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.5.0/remixicon.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.5.0/remixicon.min.css">
 
-  <style>
-    .glass {
-      background: rgba(0,0,0,0.4);
-      backdrop-filter: blur(8px);
-    }
-  </style>
+<style>
+/* Glass */
+.glass {
+  background: rgba(0,0,0,0.4);
+  backdrop-filter: blur(10px);
+}
+
+/* Fade animations */
+.fade-up {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.8s ease;
+}
+.fade-up.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Animated text */
+.char {
+  opacity: 0;
+  transform: translateX(-20px);
+  display: inline-block;
+  transition: all 0.4s ease;
+}
+.char.show {
+  opacity: 1;
+  transform: translateX(0);
+}
+</style>
 
 </head>
 
 <body class="bg-black text-white font-sans">
 
-  <!-- NAVBAR -->
+<!-- NAV -->
 
-  <header id="nav" class="fixed w-full z-50 transition">
-    <div class="flex justify-between items-center px-6 py-4 glass">
-      <h1 class="font-bold tracking-widest">AI CASH</h1>
-      <a href="#" class="bg-white text-black px-5 py-2 rounded-full text-sm font-semibold">
-        Empieza
-      </a>
-    </div>
-  </header>
+<header id="nav" class="fixed w-full z-50 transition">
+  <div class="flex justify-between items-center px-6 py-4 glass">
+    <h1 class="font-bold tracking-widest">AI CASH</h1>
+    <a href="#" class="bg-white text-black px-5 py-2 rounded-full text-sm font-semibold">Empieza</a>
+  </div>
+</header>
 
-  <!-- HERO -->
+<!-- HERO -->
 
-  <section class="relative h-screen flex items-center px-6">
+<section class="relative h-screen flex items-center px-6">
+
+  <!-- VIDEO -->
+
+  <video autoplay muted loop playsinline class="absolute w-full h-full object-cover" id="bgVideo">
+    <source src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260403_050628_c4e32401-fab4-4a27-b7a8-6e9291cd5959.mp4">
+  </video>
+
+  <!-- FALLBACK -->
+
+  <div id="fallback" class="absolute inset-0 bg-gradient-to-br from-black via-gray-900 to-black hidden"></div>
+
+  <!-- OVERLAY -->
+
+  <div class="absolute inset-0 bg-black/60"></div>
+
+  <!-- CONTENT -->
+
+  <div class="relative z-10 max-w-2xl">
 
 ```
-<video autoplay muted loop playsinline class="absolute w-full h-full object-cover">
-  <source src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260403_050628_c4e32401-fab4-4a27-b7a8-6e9291cd5959.mp4">
-</video>
+<h1 id="title" class="text-5xl md:text-7xl font-bold leading-tight"></h1>
 
-<div class="absolute inset-0 bg-black/60"></div>
+<p class="mt-6 text-white/70 text-lg fade-up">
+  Estrategias reales para ganar dinero con inteligencia artificial.
+</p>
 
-<div class="relative z-10 max-w-xl">
-  <h1 class="text-5xl md:text-7xl font-bold leading-tight">
-    Gana dinero con IA
-  </h1>
-
-  <p class="mt-6 text-white/70 text-lg">
-    Estrategias reales para generar ingresos con inteligencia artificial.
-  </p>
-
-  <div class="mt-8 flex gap-4">
-    <a href="#" class="bg-white text-black px-6 py-3 rounded-full font-semibold">
-      Empezar
-    </a>
-
-    <a href="#" class="border border-white px-6 py-3 rounded-full">
-      Ver métodos
-    </a>
-  </div>
+<div class="mt-8 flex gap-4 fade-up">
+  <a href="#" class="bg-white text-black px-6 py-3 rounded-full font-semibold">Empezar</a>
+  <a href="#" class="border border-white px-6 py-3 rounded-full">Explorar</a>
 </div>
 ```
 
-  </section>
+  </div>
+</section>
 
-  <!-- FEATURES -->
+<!-- FEATURES -->
 
-  <section class="py-20 px-6 max-w-6xl mx-auto">
-    <h2 class="text-4xl font-bold mb-10">Métodos con IA</h2>
+<section class="py-20 px-6 max-w-6xl mx-auto">
+
+  <h2 class="text-4xl font-bold mb-12 fade-up">Métodos con IA</h2>
+
+  <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
 
 ```
-<div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+<div class="p-6 bg-white/5 border border-white/10 rounded-xl fade-up">
+  <i class="ri-robot-line text-2xl"></i>
+  <h3 class="mt-4 font-semibold">Automatización</h3>
+  <p class="text-white/60 mt-2">Gana dinero mientras duermes.</p>
+</div>
 
-  <div class="p-6 bg-white/5 border border-white/10 rounded-xl">
-    <i class="ri-robot-line text-2xl"></i>
-    <h3 class="mt-4 font-semibold">Automatización</h3>
-    <p class="text-white/60 mt-2">Gana dinero mientras duermes.</p>
-  </div>
+<div class="p-6 bg-white/5 border border-white/10 rounded-xl fade-up">
+  <i class="ri-pencil-line text-2xl"></i>
+  <h3 class="mt-4 font-semibold">Contenido IA</h3>
+  <p class="text-white/60 mt-2">Crea contenido viral.</p>
+</div>
 
-  <div class="p-6 bg-white/5 border border-white/10 rounded-xl">
-    <i class="ri-pencil-line text-2xl"></i>
-    <h3 class="mt-4 font-semibold">Contenido IA</h3>
-    <p class="text-white/60 mt-2">Crea contenido viral rápido.</p>
-  </div>
-
-  <div class="p-6 bg-white/5 border border-white/10 rounded-xl">
-    <i class="ri-code-line text-2xl"></i>
-    <h3 class="mt-4 font-semibold">Apps sin código</h3>
-    <p class="text-white/60 mt-2">Lanza herramientas IA sin programar.</p>
-  </div>
-
+<div class="p-6 bg-white/5 border border-white/10 rounded-xl fade-up">
+  <i class="ri-code-line text-2xl"></i>
+  <h3 class="mt-4 font-semibold">Apps IA</h3>
+  <p class="text-white/60 mt-2">Lanza productos sin código.</p>
 </div>
 ```
 
-  </section>
+  </div>
 
-  <!-- SCRIPT NAV SCROLL -->
+</section>
 
-  <script>
-    window.addEventListener("scroll", () => {
-      const nav = document.getElementById("nav");
-      if (window.scrollY > 50) {
-        nav.classList.add("bg-black/70");
-      } else {
-        nav.classList.remove("bg-black/70");
-      }
-    });
-  </script>
+<!-- JS PRO -->
+
+<script>
+
+/* NAV SCROLL */
+window.addEventListener("scroll", () => {
+  const nav = document.getElementById("nav");
+  nav.classList.toggle("bg-black/70", window.scrollY > 50);
+});
+
+/* VIDEO FALLBACK */
+const video = document.getElementById("bgVideo");
+video.onerror = () => {
+  document.getElementById("fallback").classList.remove("hidden");
+};
+
+/* TEXT ANIMATION */
+const text = "Gana dinero con IA";
+const title = document.getElementById("title");
+
+text.split("").forEach((char, i) => {
+  const span = document.createElement("span");
+  span.textContent = char;
+  span.classList.add("char");
+  title.appendChild(span);
+
+  setTimeout(() => span.classList.add("show"), i * 40);
+});
+
+/* SCROLL ANIMATION */
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add("show");
+    }
+  });
+});
+
+document.querySelectorAll(".fade-up").forEach(el => observer.observe(el));
+
+</script>
 
 </body>
 </html>
