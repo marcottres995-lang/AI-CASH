@@ -13,6 +13,626 @@ function App() {
   );
 }
 export default App;
+📁 src/pages/home/page.tsx
+import Navbar from './components/Navbar';
+import Hero from './components/Hero';
+import Features from './components/Features';
+import AdsSection from './components/AdsSection';
+import Footer from './components/Footer';
+export default function Home() {
+  return (
+    <main className="bg-black min-h-screen font-sans">
+      <section><Navbar /></section>
+      <section><Hero /></section>
+      <section id="tools"><Features /></section>
+      <section><AdsSection /></section>
+      <section><Footer /></section>
+    </main>
+  );
+}
+📁 src/pages/home/components/Navbar.tsx
+import { useState, useEffect } from 'react';
+const NAV_LINKS = ['Métodos', 'Herramientas', 'Guías', 'Blog'];
+export default function Navbar() {
+  const [scrolled, setScrolled] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 40);
+    window.addEventListener('scroll', onScroll);
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+  return (
+    <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${scrolled ? 'liquid-glass border-b border-white/10' : 'bg-transparent'}`}>
+      <nav className="px-6 md:px-12 lg:px-16 pt-5 pb-4 flex items-center justify-between gap-4">
+        <a href="/" className="flex items-center gap-2 shrink-0 cursor-pointer">
+          <img src="https://public.readdy.ai/ai/img_res/87e5e8ee-55fa-4259-bc4f-3d09e4c50e18.png" alt="AI Cash Logo" className="h-8 w-8 object-contain rounded-sm" />
+          <span className="text-white font-semibold text-base tracking-widest uppercase">AI CASH</span>
+        </a>
+        <ul className="hidden md:flex items-center gap-8">
+          {NAV_LINKS.map((link) => (
+            <li key={link}>
+              <a href={`#${link.toLowerCase()}`} className="text-white/70 hover:text-white text-sm font-medium tracking-wide transition-colors duration-200 whitespace-nowrap cursor-pointer">{link}</a>
+            </li>
+          ))}
+        </ul>
+        <div className="flex items-center gap-3">
+          <a href="#start" className="hidden sm:inline-flex items-center gap-2 px-5 py-2 rounded-full bg-white text-black text-sm font-semibold tracking-wide hover:bg-white/90 transition-colors duration-200 whitespace-nowrap cursor-pointer">Empieza Ahora</a>
+          <button className="md:hidden flex items-center justify-center w-9 h-9 text-white cursor-pointer" onClick={() => setMenuOpen((prev) => !prev)} aria-label="Toggle menu">
+            <i className={`ri-${menuOpen ? 'close' : 'menu'}-line text-xl`} />
+          </button>
+        </div>
+      </nav>
+      {menuOpen && (
+        <div className="md:hidden liquid-glass border-t border-white/10 px-6 pb-5 pt-3 flex flex-col gap-4">
+          {NAV_LINKS.map((link) => (
+            <a key={link} href={`#${link.toLowerCase()}`} onClick={() => setMenuOpen(false)} className="text-white/70 hover:text-white text-sm font-medium tracking-wide transition-colors duration-200 cursor-pointer">{link}</a>
+          ))}
+          <a href="#start" onClick={() => setMenuOpen(false)} className="mt-2 inline-flex items-center justify-center px-5 py-2 rounded-full bg-white text-black text-sm font-semibold whitespace-nowrap cursor-pointer">Empieza Ahora</a>
+        </div>
+      )}
+    </header>
+  );
+}
+📁 src/pages/home/components/Hero.tsx
+import { useEffect, useState } from 'react';
+import AnimatedHeading from './AnimatedHeading';
+interface FadeState {
+  sub: boolean;
+  buttons: boolean;
+  tag: boolean;
+}
+export default function Hero() {
+  const [fade, setFade] = useState<FadeState>({ sub: false, buttons: false, tag: false });
+  useEffect(() => {
+    const t1 = setTimeout(() => setFade((p) => ({ ...p, sub: true })), 800);
+    const t2 = setTimeout(() => setFade((p) => ({ ...p, buttons: true })), 1200);
+    const t3 = setTimeout(() => setFade((p) => ({ ...p, tag: true })), 1400);
+    return () => { clearTimeout(t1); clearTimeout(t2); clearTimeout(t3); };
+  }, []);
+  const fadeStyle = (visible: boolean): React.CSSProperties => ({
+    opacity: visible ? 1 : 0,
+    transform: visible ? 'translateY(0)' : 'translateY(14px)',
+    transition: 'opacity 600ms ease, transform 600ms ease',
+  });
+  return (
+    <section className="relative w-full min-h-screen flex flex-col">
+      <video className="absolute inset-0 w-full h-full object-cover" src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260403_050628_c4e32401-fab4-4a27-b7a8-6e9291cd5959.mp4" autoPlay loop muted playsInline />
+      <div className="relative z-10 flex flex-col justify-center flex-1 px-6 md:px-12 lg:px-20 pt-32 pb-20">
+        <div className="max-w-5xl">
+          <div style={fadeStyle(fade.tag)} className="mb-6 inline-flex items-center gap-2 px-4 py-1.5 rounded-full liquid-glass border border-white/15 text-white/60 text-xs font-medium tracking-widest uppercase">
+            <span className="w-1.5 h-1.5 rounded-full bg-white/60 animate-pulse" />
+            Estrategias de Ingresos con IA 2026
+          </div>
+          <AnimatedHeading />
+          <p style={fadeStyle(fade.sub)} className="mt-6 text-white/60 text-lg sm:text-xl font-light max-w-xl leading-relaxed">Descubre estrategias reales, herramientas y oportunidades para generar ingresos usando IA.</p>
+          <div style={fadeStyle(fade.buttons)} className="mt-10 flex flex-col sm:flex-row items-start gap-3">
+            <a href="#start" className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full bg-white text-black text-sm font-semibold tracking-wide hover:bg-white/90 transition-colors duration-200 whitespace-nowrap cursor-pointer">Empieza Ahora <i className="ri-arrow-right-line text-base" /></a>
+            <a href="#methods" className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full liquid-glass border border-white/20 text-white text-sm font-medium tracking-wide hover:border-white/40 transition-colors duration-200 whitespace-nowrap cursor-pointer">Explora Métodos</a>
+          </div>
+          <p style={fadeStyle(fade.tag)} className="mt-10 text-white/30 text-xs tracking-[0.25em] uppercase font-medium">IA.&nbsp; Ingresos.&nbsp; Libertad.</p>
+        </div>
+      </div>
+      <div className="relative z-10 flex justify-center pb-8">
+        <div className="flex flex-col items-center gap-2 text-white/30">
+          <span className="text-xs tracking-widest uppercase font-light">Desplázate</span>
+          <i className="ri-arrow-down-line text-sm animate-bounce" />
+        </div>
+      </div>
+    </section>
+  );
+}
+📁 src/pages/home/components/AnimatedHeading.tsx
+import { useEffect, useState } from 'react';
+interface CharState {
+  visible: boolean;
+}
+const LINES = ['Gana dinero con IA', 'desde hoy.'];
+export default function AnimatedHeading() {
+  const [charStates, setCharStates] = useState<CharState[][]>(
+    LINES.map((line) => Array(line.length).fill({ visible: false }))
+  );
+  useEffect(() => {
+    const timeouts: ReturnType<typeof setTimeout>[] = [];
+    LINES.forEach((line, lineIndex) => {
+      const lineLength = LINES[lineIndex].length;
+      line.split('').forEach((_, charIndex) => {
+        const delay = 200 + lineIndex * lineLength * 30 + charIndex * 30;
+        const t = setTimeout(() => {
+          setCharStates((prev) => {
+            const next = prev.map((l) => [...l]);
+            next[lineIndex][charIndex] = { visible: true };
+            return next;
+          });
+        }, delay);
+        timeouts.push(t);
+      });
+    });
+    return () => timeouts.forEach(clearTimeout);
+  }, []);
+  return (
+    <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-semibold text-white leading-tight tracking-tight">
+      {LINES.map((line, lineIndex) => (
+        <span key={lineIndex} className="block">
+          {line.split('').map((char, charIndex) => (
+            <span key={charIndex} style={{ display: 'inline-block', opacity: charStates[lineIndex][charIndex]?.visible ? 1 : 0, transform: charStates[lineIndex][charIndex]?.visible ? 'translateX(0)' : 'translateX(-18px)', transition: 'opacity 500ms ease, transform 500ms ease' }}>
+              {char === ' ' ? '\u00A0' : char}
+            </span>
+          ))}
+        </span>
+      ))}
+    </h1>
+  );
+}
+📁 src/pages/home/components/Features.tsx
+import { useEffect, useRef, useState } from 'react';
+interface Feature {
+  icon: string;
+  title: string;
+  description: string;
+  tag: string;
+}
+const FEATURES: Feature[] = [
+  { icon: 'ri-robot-line', title: 'Ingresos con Automatización IA', description: 'Construye flujos de trabajo automatizados con herramientas como Make.com y n8n para ofrecer servicios a escala—gana mientras duermes.', tag: 'Automatización' },
+  { icon: 'ri-pencil-line', title: 'Creación de Contenido con IA', description: 'Usa GPT-4, Claude y Midjourney para producir contenido de alta demanda para marcas, newsletters y redes sociales.', tag: 'Contenido' },
+  { icon: 'ri-code-s-slash-line', title: 'Productos IA sin Código', description: 'Lanza micro-herramientas SaaS y extensiones Chrome impulsadas por APIs de IA sin necesidad de programar.', tag: 'Productos' },
+  { icon: 'ri-line-chart-line', title: 'Trading y Finanzas con IA', description: 'Aprovecha señales impulsadas por IA y estrategias algorítmicas para trading de cripto, acciones y opciones.', tag: 'Finanzas' },
+  { icon: 'ri-customer-s
+ok pero para copiar
+
+Readdy
+Dale, te lo paso todo en bloques listos para copiar y pegar. Acá va:
+
+📋 src/App.tsx
+import { BrowserRouter } from "react-router-dom";
+import { AppRoutes } from "./router";
+import { I18nextProvider } from "react-i18next";
+import i18n from "./i18n";
+function App() {
+  return (
+    <I18nextProvider i18n={i18n}>
+      <BrowserRouter basename={__BASE_PATH__}>
+        <AppRoutes />
+      </BrowserRouter>
+    </I18nextProvider>
+  );
+}
+export default App;
+📋 src/pages/home/page.tsx
+import Navbar from './components/Navbar';
+import Hero from './components/Hero';
+import Features from './components/Features';
+import AdsSection from './components/AdsSection';
+import Footer from './components/Footer';
+export default function Home() {
+  return (
+    <main className="bg-black min-h-screen font-sans">
+      <section><Navbar /></section>
+      <section><Hero /></section>
+      <section id="tools"><Features /></section>
+      <section><AdsSection /></section>
+      <section><Footer /></section>
+    </main>
+  );
+}
+📋 src/pages/home/components/Navbar.tsx
+import { useState, useEffect } from 'react';
+const NAV_LINKS = ['Métodos', 'Herramientas', 'Guías', 'Blog'];
+export default function Navbar() {
+  const [scrolled, setScrolled] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 40);
+    window.addEventListener('scroll', onScroll);
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+  return (
+    <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${scrolled ? 'liquid-glass border-b border-white/10' : 'bg-transparent'}`}>
+      <nav className="px-6 md:px-12 lg:px-16 pt-5 pb-4 flex items-center justify-between gap-4">
+        <a href="/" className="flex items-center gap-2 shrink-0 cursor-pointer">
+          <img src="https://public.readdy.ai/ai/img_res/87e5e8ee-55fa-4259-bc4f-3d09e4c50e18.png" alt="AI Cash Logo" className="h-8 w-8 object-contain rounded-sm" />
+          <span className="text-white font-semibold text-base tracking-widest uppercase">AI CASH</span>
+        </a>
+        <ul className="hidden md:flex items-center gap-8">
+          {NAV_LINKS.map((link) => (
+            <li key={link}>
+              <a href={`#${link.toLowerCase()}`} className="text-white/70 hover:text-white text-sm font-medium tracking-wide transition-colors duration-200 whitespace-nowrap cursor-pointer">{link}</a>
+            </li>
+          ))}
+        </ul>
+        <div className="flex items-center gap-3">
+          <a href="#start" className="hidden sm:inline-flex items-center gap-2 px-5 py-2 rounded-full bg-white text-black text-sm font-semibold tracking-wide hover:bg-white/90 transition-colors duration-200 whitespace-nowrap cursor-pointer">Empieza Ahora</a>
+          <button className="md:hidden flex items-center justify-center w-9 h-9 text-white cursor-pointer" onClick={() => setMenuOpen((prev) => !prev)} aria-label="Toggle menu">
+            <i className={`ri-${menuOpen ? 'close' : 'menu'}-line text-xl`} />
+          </button>
+        </div>
+      </nav>
+      {menuOpen && (
+        <div className="md:hidden liquid-glass border-t border-white/10 px-6 pb-5 pt-3 flex flex-col gap-4">
+          {NAV_LINKS.map((link) => (
+            <a key={link} href={`#${link.toLowerCase()}`} onClick={() => setMenuOpen(false)} className="text-white/70 hover:text-white text-sm font-medium tracking-wide transition-colors duration-200 cursor-pointer">{link}</a>
+          ))}
+          <a href="#start" onClick={() => setMenuOpen(false)} className="mt-2 inline-flex items-center justify-center px-5 py-2 rounded-full bg-white text-black text-sm font-semibold whitespace-nowrap cursor-pointer">Empieza Ahora</a>
+        </div>
+      )}
+    </header>
+  );
+}
+📋 src/pages/home/components/Hero.tsx
+import { useEffect, useState } from 'react';
+import AnimatedHeading from './AnimatedHeading';
+interface FadeState {
+  sub: boolean;
+  buttons: boolean;
+  tag: boolean;
+}
+export default function Hero() {
+  const [fade, setFade] = useState<FadeState>({ sub: false, buttons: false, tag: false });
+  useEffect(() => {
+    const t1 = setTimeout(() => setFade((p) => ({ ...p, sub: true })), 800);
+    const t2 = setTimeout(() => setFade((p) => ({ ...p, buttons: true })), 1200);
+    const t3 = setTimeout(() => setFade((p) => ({ ...p, tag: true })), 1400);
+    return () => { clearTimeout(t1); clearTimeout(t2); clearTimeout(t3); };
+  }, []);
+  const fadeStyle = (visible: boolean): React.CSSProperties => ({
+    opacity: visible ? 1 : 0,
+    transform: visible ? 'translateY(0)' : 'translateY(14px)',
+    transition: 'opacity 600ms ease, transform 600ms ease',
+  });
+  return (
+    <section className="relative w-full min-h-screen flex flex-col">
+      <video className="absolute inset-0 w-full h-full object-cover" src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260403_050628_c4e32401-fab4-4a27-b7a8-6e9291cd5959.mp4" autoPlay loop muted playsInline />
+      <div className="relative z-10 flex flex-col justify-center flex-1 px-6 md:px-12 lg:px-20 pt-32 pb-20">
+        <div className="max-w-5xl">
+          <div style={fadeStyle(fade.tag)} className="mb-6 inline-flex items-center gap-2 px-4 py-1.5 rounded-full liquid-glass border border-white/15 text-white/60 text-xs font-medium tracking-widest uppercase">
+            <span className="w-1.5 h-1.5 rounded-full bg-white/60 animate-pulse" />
+            Estrategias de Ingresos con IA 2026
+          </div>
+          <AnimatedHeading />
+          <p style={fadeStyle(fade.sub)} className="mt-6 text-white/60 text-lg sm:text-xl font-light max-w-xl leading-relaxed">Descubre estrategias reales, herramientas y oportunidades para generar ingresos usando IA.</p>
+          <div style={fadeStyle(fade.buttons)} className="mt-10 flex flex-col sm:flex-row items-start gap-3">
+            <a href="#start" className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full bg-white text-black text-sm font-semibold tracking-wide hover:bg-white/90 transition-colors duration-200 whitespace-nowrap cursor-pointer">Empieza Ahora <i className="ri-arrow-right-line text-base" /></a>
+            <a href="#methods" className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full liquid-glass border border-white/20 text-white text-sm font-medium tracking-wide hover:border-white/40 transition-colors duration-200 whitespace-nowrap cursor-pointer">Explora Métodos</a>
+          </div>
+          <p style={fadeStyle(fade.tag)} className="mt-10 text-white/30 text-xs tracking-[0.25em] uppercase font-medium">IA.&nbsp; Ingresos.&nbsp; Libertad.</p>
+        </div>
+      </div>
+      <div className="relative z-10 flex justify-center pb-8">
+        <div className="flex flex-col items-center gap-2 text-white/30">
+          <span className="text-xs tracking-widest uppercase font-light">Desplázate</span>
+          <i className="ri-arrow-down-line text-sm animate-bounce" />
+        </div>
+      </div>
+    </section>
+  );
+}
+📋 src/pages/home/components/AnimatedHeading.tsx
+import { useEffect, useState } from 'react';
+interface CharState {
+  visible: boolean;
+}
+const LINES = ['Gana dinero con IA', 'desde hoy.'];
+export default function AnimatedHeading() {
+  const [charStates, setCharStates] = useState<CharState[][]>(
+    LINES.map((line) => Array(line.length).fill({ visible: false }))
+  );
+  useEffect(() => {
+    const timeouts: ReturnType<typeof setTimeout>[] = [];
+    LINES.forEach((line, lineIndex) => {
+      const lineLength = LINES[lineIndex].length;
+      line.split('').forEach((_, charIndex) => {
+        const delay = 200 + lineIndex * lineLength * 30 + charIndex * 30;
+        const t = setTimeout(() => {
+          setCharStates((prev) => {
+            const next = prev.map((l) => [...l]);
+            next[lineIndex][charIndex] = { visible: true };
+            return next;
+          });
+        }, delay);
+        timeouts.push(t);
+      });
+    });
+    return () => timeouts.forEach(clearTimeout);
+  }, []);
+  return (
+    <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-semibold text-white leading-tight tracking-tight">
+      {LINES.map((line, lineIndex) => (
+        <span key={lineIndex} className="block">
+          {line.split('').map((char, charIndex) => (
+            <span key={charIndex} style={{ display: 'inline-block', opacity: charStates[lineIndex][charIndex]?.visible ? 1 : 0, transform: charStates[lineIndex][charIndex]?.visible ? 'translateX(0)' : 'translateX(-18px)', transition: 'opacity 500ms ease, transform 500ms ease' }}>
+              {char === ' ' ? '\u00A0' : char}
+            </span>
+          ))}
+        </span>
+      ))}
+    </h1>
+  );
+}
+📋 src/pages/home/components/Features.tsx
+import { useEffect, useRef, useState } from 'react';
+interface Feature {
+  icon: string;
+  title: string;
+  description: string;
+  tag: string;
+}
+const FEATURES: Feature[] = [
+  { icon: 'ri-robot-line', title: 'Ingresos con Automatización IA', description: 'Construye flujos de trabajo automatizados con herramientas como Make.com y n8n para ofrecer servicios a escala—gana mientras duermes.', tag: 'Automatización' },
+  { icon: 'ri-pencil-line', title: 'Creación de Contenido con IA', description: 'Usa GPT-4, Claude y Midjourney para producir contenido de alta demanda para marcas, newsletters y redes sociales.', tag: 'Contenido' },
+  { icon: 'ri-code-s-slash-line', title: 'Productos IA sin Código', description: 'Lanza micro-herramientas SaaS y extensiones Chrome impulsadas por APIs de IA sin necesidad de programar.', tag: 'Productos' },
+  { icon: 'ri-line-chart-line', title: 'Trading y Finanzas con IA', description: 'Aprovecha señales impulsadas por IA y estrategias algorítmicas para trading de cripto, acciones y opciones.', tag: 'Finanzas' },
+  { icon: 'ri-customer-service-2
+pero para copiar y pegar en un hosting web
+
+Readdy
+Ahh, entiendo! Querés un archivo HTML estático listo para subir a cualquier hosting web (cPanel, Hostinger, etc.) sin necesidad de React ni Node.js.
+
+Te armo un solo archivo index.html con todo el CSS y JS embebido, listo para copiar, pegar y subir:
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Cash – Cómo Ganar Dinero con Inteligencia Artificial en 2026</title>
+  <meta name="description" content="Descubre estrategias reales, herramientas y oportunidades para ganar dinero con inteligencia artificial en 2026." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.5.0/remixicon.min.css">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Inter', sans-serif; background: #000; color: #fff; -webkit-font-smoothing: antialiased; }
+    a { text-decoration: none; color: inherit; }
+    ul { list-style: none; }
+    img { max-width: 100%; display: block; }
+    /* Liquid Glass */
+    .liquid-glass {
+      background: rgba(0,0,0,0.4);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+      box-shadow: inset 0 1px 1px rgba(255,255,255,0.1);
+    }
+    /* Navbar */
+    .navbar {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 50;
+      transition: all 0.5s ease;
+    }
+    .navbar.scrolled {
+      background: rgba(0,0,0,0.4);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+    .nav-container {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 20px 24px 16px;
+      max-width: 1400px; margin: 0 auto;
+    }
+    .logo { display: flex; align-items: center; gap: 8px; }
+    .logo img { height: 32px; width: 32px; object-fit: contain; border-radius: 4px; }
+    .logo span { font-weight: 600; font-size: 14px; letter-spacing: 0.15em; text-transform: uppercase; }
+    .nav-links { display: none; gap: 32px; }
+    .nav-links a { color: rgba(255,255,255,0.7); font-size: 14px; font-weight: 500; letter-spacing: 0.05em; transition: color 0.2s; white-space: nowrap; }
+    .nav-links a:hover { color: #fff; }
+    .nav-cta {
+      display: none; align-items: center; gap: 8px;
+      padding: 8px 20px; border-radius: 9999px;
+      background: #fff; color: #000; font-size: 14px; font-weight: 600; letter-spacing: 0.05em;
+      transition: background 0.2s; white-space: nowrap;
+    }
+    .nav-cta:hover { background: rgba(255,255,255,0.9); }
+    .hamburger {
+      display: flex; align-items: center; justify-content: center;
+      width: 36px; height: 36px; color: #fff; background: none; border: none; cursor: pointer;
+    }
+    .mobile-menu {
+      display: none; padding: 12px 24px 20px;
+      background: rgba(0,0,0,0.4);
+      backdrop-filter: blur(4px);
+      border-top: 1px solid rgba(255,255,255,0.1);
+    }
+    .mobile-menu.active { display: flex; flex-direction: column; gap: 16px; }
+    .mobile-menu a { color: rgba(255,255,255,0.7); font-size: 14px; font-weight: 500; }
+    .mobile-cta {
+      margin-top: 8px; display: inline-flex; justify-content: center;
+      padding: 8px 20px; border-radius: 9999px;
+      background: #fff; color: #000; font-size: 14px; font-weight: 600;
+    }
+    /* Hero */
+    .hero {
+      position: relative; width: 100%; min-height: 100vh;
+      display: flex; flex-direction: column;
+    }
+    .hero-video {
+      position: absolute; inset: 0; width: 100%; height: 100%;
+      object-fit: cover; z-index: 0;
+    }
+    .hero-content {
+      position: relative; z-index: 10;
+      flex: 1; display: flex; flex-direction: column; justify-content: center;
+      padding: 128px 24px 80px;
+      max-width: 1400px; margin: 0 auto; width: 100%;
+    }
+    .eyebrow {
+      display: inline-flex; align-items: center; gap: 8px;
+      margin-bottom: 24px; padding: 6px 16px;
+      border-radius: 9999px; border: 1px solid rgba(255,255,255,0.15);
+      font-size: 12px; font-weight: 500; letter-spacing: 0.15em; text-transform: uppercase;
+      color: rgba(255,255,255,0.6); width: fit-content;
+    }
+    .pulse { width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,0.6); animation: pulse 2s infinite; }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.5} }
+    .hero h1 {
+      font-size: 48px; font-weight: 600; line-height: 1.1; letter-spacing: -0.02em;
+    }
+    .hero h1 span { display: block; }
+    .hero h1 .char {
+      display: inline-block; opacity: 0; transform: translateX(-18px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+    .hero h1 .char.visible { opacity: 1; transform: translateX(0); }
+    .hero-sub {
+      margin-top: 24px; font-size: 18px; font-weight: 300;
+      color: rgba(255,255,255,0.6); max-width: 500px; line-height: 1.6;
+      opacity: 0; transform: translateY(14px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .hero-sub.visible { opacity: 1; transform: translateY(0); }
+    .hero-buttons {
+      margin-top: 40px; display: flex; flex-direction: column; align-items: flex-start; gap: 12px;
+      opacity: 0; transform: translateY(14px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .hero-buttons.visible { opacity: 1; transform: translateY(0); }
+    .btn-primary {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 14px 28px; border-radius: 9999px;
+      background: #fff; color: #000; font-size: 14px; font-weight: 600; letter-spacing: 0.05em;
+      transition: background 0.2s; white-space: nowrap;
+    }
+    .btn-primary:hover { background: rgba(255,255,255,0.9); }
+    .btn-secondary {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 14px 28px; border-radius: 9999px;
+      border: 1px solid rgba(255,255,255,0.2); color: #fff;
+      font-size: 14px; font-weight: 500; letter-spacing: 0.05em;
+      transition: border-color 0.2s; white-space: nowrap;
+    }
+    .btn-secondary:hover { border-color: rgba(255,255,255,0.4); }
+    .hero-tag {
+      margin-top: 40px; font-size: 12px; letter-spacing: 0.25em; text-transform: uppercase;
+      font-weight: 500; color: rgba(255,255,255,0.3);
+      opacity: 0; transform: translateY(14px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .hero-tag.visible { opacity: 1; transform: translateY(0); }
+    .scroll-indicator {
+      position: relative; z-index: 10;
+      display: flex; justify-content: center; padding-bottom: 32px;
+    }
+    .scroll-indicator > div {
+      display: flex; flex-direction: column; align-items: center; gap: 8px;
+      color: rgba(255,255,255,0.3);
+    }
+    .scroll-indicator span { font-size: 12px; letter-spacing: 0.15em; text-transform: uppercase; font-weight: 300; }
+    .bounce { animation: bounce 2s infinite; }
+    @keyframes bounce { 0%,20%,50%,80%,100%{transform:translateY(0)} 40%{transform:translateY(-8px)} 60%{transform:translateY(-4px)} }
+    /* Features */
+    .features { padding: 96px 24px; max-width: 1400px; margin: 0 auto; }
+    .features-header { max-width: 600px; margin-bottom: 64px; }
+    .features-header p.label { font-size: 12px; font-weight: 500; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(255,255,255,0.3); margin-bottom: 12px; }
+    .features-header h2 { font-size: 40px; font-weight: 600; line-height: 1.15; }
+    .features-header h2 span { color: rgba(255,255,255,0.4); }
+    .features-header > p { margin-top: 16px; font-size: 16px; font-weight: 300; color: rgba(255,255,255,0.45); line-height: 1.6; max-width: 500px; }
+    .features-grid {
+      display: grid; grid-template-columns: 1fr; gap: 16px;
+    }
+    .feature-card {
+      padding: 24px; border-radius: 16px;
+      border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.03);
+      transition: all 0.3s ease; cursor: default;
+      opacity: 0; transform: translateY(24px);
+    }
+    .feature-card.visible { opacity: 1; transform: translateY(0); transition: opacity 0.6s ease, transform 0.6s ease, border-color 0.3s, background 0.3s; }
+    .feature-card:hover { border-color: rgba(255,255,255,0.25); background: rgba(255,255,255,0.06); }
+    .feature-tag {
+      display: inline-block; margin-bottom: 16px; padding: 4px 10px;
+      border-radius: 9999px; background: rgba(255,255,255,0.1);
+      font-size: 12px; font-weight: 500; letter-spacing: 0.05em; color: rgba(255,255,255,0.5);
+    }
+    .feature-icon {
+      display: flex; align-items: center; justify-content: center;
+      width: 44px; height: 44px; margin-bottom: 16px;
+      border-radius: 12px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
+      transition: border-color 0.3s;
+    }
+    .feature-card:hover .feature-icon { border-color: rgba(255,255,255,0.2); }
+    .feature-icon i { font-size: 20px; color: rgba(255,255,255,0.7); }
+    .feature-card h3 { font-size: 16px; font-weight: 600; margin-bottom: 8px; line-height: 1.3; }
+    .feature-card p { font-size: 14px; font-weight: 300; color: rgba(255,255,255,0.45); line-height: 1.6; }
+    .feature-link {
+      margin-top: 20px; display: flex; align-items: center; gap: 4px;
+      font-size: 12px; font-weight: 500; color: rgba(255,255,255,0.3);
+      transition: color 0.3s;
+    }
+    .feature-card:hover .feature-link { color: rgba(255,255,255,0.6); }
+    /* Ads */
+    .ads { padding: 24px; max-width: 1400px; margin: 0 auto; }
+    .ads-box {
+      height: 96px; border-radius: 12px; background: #1f2937;
+      border: 1px solid rgba(255,255,255,0.05);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .ads-box span { color: rgba(255,255,255,0.2); font-size: 14px; font-weight: 500; letter-spacing: 0.15em; text-transform: uppercase; }
+    /* Foo
+ESWE ES EL CODIGO DE MI PAGINA
+
+Readdy
+Sí, exacto! Todo ese código que te pasé en los mensajes anteriores es el código completo de tu página AI Cash.
+
+Te lo di en dos formatos:
+
+Formato React (archivos separados como Navbar.tsx, Hero.tsx, etc.) — este es el que tenés actualmente en tu proyecto de Readdy
+Formato HTML estático (un solo archivo index.html) — para subir a cualquier hosting web tradicional
+¿Necesitás que te pase algo específico de nuevo, o querés que te ayude a modificar algo de la página? Por ejemplo, puedo:
+
+Agregar una nueva sección (precios, testimonios, newsletter, etc.)
+Cambiar colores o estilos
+Agregar más páginas
+Mejorar las animaciones
+Cualquier otra cosa que necesites
+¿Qué querés hacer?
+
+ES QUE SALE NEGRA LA PAG
+
+Readdy
+Dale, vamos a ver qué pasa. Déjame revisar los archivos de tu proyecto para encontrar el problema.
+
+Archivo leído
+src/pages/home/page.tsx
+Déjame revisar si hay errores en la consola que expliquen por qué sale negra.
+
+
+2 herramientas llamadas
+Déjame revisar los archivos principales del proyecto para ver qué está causando el problema.
+
+
+4 herramientas llamadas
+Déjame verificar si hay errores de compilación que estén causando el problema.
+
+
+3 herramientas llamadas
+El problema parece ser que faltan archivos de traducción en src/i18n/local/. Voy a crear uno para que el sistema de i18n funcione correctamente.
+
+
+2 herramientas llamadas
+¡Listo! Ya lo arreglé. El problema era que faltaban archivos de traducción en la carpeta src/i18n/local/. El sistema de internacionalización (i18n) estaba buscando archivos de idioma pero no encontraba ninguno, y eso hacía que la app no se renderizara bien — por eso se veía todo negro.
+
+Acabo de crear el archivo de traducción que faltaba y el build ya pasó correctamente. Ahora tu página debería verse bien con el video de fondo, las animaciones y todo el contenido.
+
+¿Podés refrescar la vista previa y confirmarme que ya se ve bien?
+
+Versión 3
+
+DAME EL CODIGO ENESTE PARA PEGAR EN GITHUB
+
+Readdy
+Dale, te paso todo el código de tu proyecto AI Cash organizado por archivos, listo para copiar y pegar en GitHub:
+
+📁 src/App.tsx
+import { BrowserRouter } from "react-router-dom";
+import { AppRoutes } from "./router";
+import { I18nextProvider } from "react-i18next";
+import i18n from "./i18n";
+function App() {
+  return (
+    <I18nextProvider i18n={i18n}>
+      <BrowserRouter basename={__BASE_PATH__}>
+        <AppRoutes />
+      </BrowserRouter>
+    </I18nextProvider>
+  );
+}
+export default App;
 📁 src/main.tsx
 import { StrictMode } from 'react'
 import './i18n'
@@ -290,4 +910,286 @@ export default function Hero() {
         muted
         playsInline
       />
-      <div className="relative z-10 flex flex-col just
+      <div className="relative z-10 flex flex-col justify-ce
+ES HTML?
+
+Readdy
+No, lo que te pasé antes es React + TypeScript, no HTML puro. Es código para un proyecto moderno con Vite, componentes, animaciones, etc.
+
+Si necesitás una versión HTML estática (para subir a GitHub Pages, Netlify, o cualquier hosting simple), te la puedo generar ahora mismo. Sería un solo archivo index.html con todo el CSS y JS embebido, sin necesidad de instalar nada.
+
+¿Querés que te pase la versión HTML estática lista para copiar y pegar?
+
+SI
+
+Readdy
+Dale, te genero la versión HTML estática completa — un solo archivo que podés copiar y pegar directamente en cualquier hosting.
+
+Archivo creado
+static/index.html
+¡Listo! Ya te generé la versión HTML estática completa en static/index.html.
+
+Es un solo archivo con todo incluido:
+
+Todo el CSS embebido
+Todo el JavaScript embebido
+Video de fondo
+Animaciones del título letra por letra
+Efecto liquid glass en la navbar
+Cards con animación al hacer scroll
+Menú mobile responsive
+Para usarlo:
+
+Copiá el archivo static/index.html
+Subilo a cualquier hosting (GitHub Pages, Netlify, Vercel, Cloudflare Pages, etc.)
+Listo — no necesitás instalar nada ni compilar nada
+¿Lo querés en otro formato o necesitás que le agregue algo más?
+
+¡Todo listo!
+Versión 4
+
+OK AHORA PASA EL CODIGO EN HTML
+
+Readdy
+06:49 PM
+Dale, acá te va el código HTML completo listo para copiar y pegar:
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Cash – Cómo Ganar Dinero con Inteligencia Artificial en 2026</title>
+  <meta name="description" content="Descubre estrategias reales, herramientas y oportunidades para ganar dinero con inteligencia artificial en 2026." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.5.0/remixicon.min.css">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Inter', sans-serif; background: #000; color: #fff; -webkit-font-smoothing: antialiased; }
+    a { text-decoration: none; color: inherit; }
+    ul { list-style: none; }
+    img { max-width: 100%; display: block; }
+    .liquid-glass {
+      background: rgba(0,0,0,0.4);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+      box-shadow: inset 0 1px 1px rgba(255,255,255,0.1);
+    }
+    .navbar {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 50;
+      transition: all 0.5s ease;
+    }
+    .navbar.scrolled {
+      background: rgba(0,0,0,0.4);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      box-shadow: inset 0 1px 1px rgba(255,255,255,0.1);
+    }
+    .nav-inner {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 20px 24px 16px;
+      max-width: 1400px; margin: 0 auto;
+    }
+    .logo { display: flex; align-items: center; gap: 8px; }
+    .logo img { width: 32px; height: 32px; object-fit: contain; border-radius: 4px; }
+    .logo span { font-weight: 600; font-size: 14px; letter-spacing: 0.15em; text-transform: uppercase; }
+    .nav-links { display: flex; align-items: center; gap: 32px; }
+    .nav-links a {
+      color: rgba(255,255,255,0.7); font-size: 14px; font-weight: 500;
+      letter-spacing: 0.05em; transition: color 0.2s; white-space: nowrap;
+    }
+    .nav-links a:hover { color: #fff; }
+    .nav-cta {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 8px 20px; border-radius: 9999px; background: #fff; color: #000;
+      font-size: 14px; font-weight: 600; letter-spacing: 0.05em;
+      transition: background 0.2s; white-space: nowrap;
+    }
+    .nav-cta:hover { background: rgba(255,255,255,0.9); }
+    .menu-btn {
+      display: none; width: 36px; height: 36px; align-items: center; justify-content: center;
+      color: #fff; background: none; border: none; cursor: pointer; font-size: 20px;
+    }
+    .mobile-menu {
+      display: none; flex-direction: column; gap: 16px;
+      padding: 12px 24px 20px;
+      background: rgba(0,0,0,0.4);
+      backdrop-filter: blur(4px);
+      border-top: 1px solid rgba(255,255,255,0.1);
+    }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu a {
+      color: rgba(255,255,255,0.7); font-size: 14px; font-weight: 500;
+      letter-spacing: 0.05em; transition: color 0.2s;
+    }
+    .mobile-menu a:hover { color: #fff; }
+    .mobile-cta {
+      display: inline-flex; align-items: center; justify-content: center;
+      padding: 8px 20px; border-radius: 9999px; background: #fff; color: #000;
+      font-size: 14px; font-weight: 600; margin-top: 8px;
+    }
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .nav-cta { display: none; }
+      .menu-btn { display: flex; }
+    }
+    .hero {
+      position: relative; width: 100%; min-height: 100vh;
+      display: flex; flex-direction: column; overflow: hidden;
+    }
+    .hero-video {
+      position: absolute; inset: 0; width: 100%; height: 100%;
+      object-fit: cover; z-index: 0;
+    }
+    .hero-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to bottom, rgba(0,0,0,0.3), rgba(0,0,0,0.2), rgba(0,0,0,0.3));
+      z-index: 1;
+    }
+    .hero-content {
+      position: relative; z-index: 10; flex: 1;
+      display: flex; flex-direction: column; justify-content: center;
+      padding: 140px 24px 80px;
+      max-width: 1400px; margin: 0 auto; width: 100%;
+    }
+    .hero-tag {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 6px 16px; border-radius: 9999px;
+      background: rgba(0,0,0,0.4); backdrop-filter: blur(4px);
+      border: 1px solid rgba(255,255,255,0.15);
+      color: rgba(255,255,255,0.6); font-size: 12px;
+      font-weight: 500; letter-spacing: 0.15em; text-transform: uppercase;
+      margin-bottom: 24px; width: fit-content;
+      opacity: 0; transform: translateY(14px);
+      animation: fadeSlideUp 600ms ease 1.4s forwards;
+    }
+    .hero-tag .dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: rgba(255,255,255,0.6); animation: pulse 2s infinite;
+    }
+    .hero h1 {
+      font-size: clamp(40px, 6vw, 80px); font-weight: 600;
+      line-height: 1.1; letter-spacing: -0.02em;
+    }
+    .hero h1 span { display: block; }
+    .hero h1 .line1 .char,
+    .hero h1 .line2 .char {
+      display: inline-block; opacity: 0; transform: translateX(-18px);
+    }
+    .hero-sub {
+      margin-top: 24px; color: rgba(255,255,255,0.6);
+      font-size: clamp(16px, 2vw, 20px); font-weight: 300;
+      max-width: 520px; line-height: 1.6;
+      opacity: 0; transform: translateY(14px);
+      animation: fadeSlideUp 600ms ease 0.8s forwards;
+    }
+    .hero-buttons {
+      margin-top: 40px; display: flex; flex-wrap: wrap; gap: 12px;
+      opacity: 0; transform: translateY(14px);
+      animation: fadeSlideUp 600ms ease 1.2s forwards;
+    }
+    .btn-primary {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 14px 28px; border-radius: 9999px; background: #fff; color: #000;
+      font-size: 14px; font-weight: 600; letter-spacing: 0.05em;
+      transition: background 0.2s; white-space: nowrap;
+    }
+    .btn-primary:hover { background: rgba(255,255,255,0.9); }
+    .btn-secondary {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 14px 28px; border-radius: 9999px;
+      background: rgba(0,0,0,0.4); backdrop-filter: blur(4px);
+      border: 1px solid rgba(255,255,255,0.2); color: #fff;
+      font-size: 14px; font-weight: 500; letter-spacing: 0.05em;
+      transition: border-color 0.2s; white-space: nowrap;
+    }
+    .btn-secondary:hover { border-color: rgba(255,255,255,0.4); }
+    .hero-footer {
+      position: relative; z-index: 10;
+      display: flex; justify-content: center; padding-bottom: 32px;
+      opacity: 0; transform: translateY(14px);
+      animation: fadeSlideUp 600ms ease 1.4s forwards;
+    }
+    .scroll-indicator {
+      display: flex; flex-direction: column; align-items: center; gap: 8px;
+      color: rgba(255,255,255,0.3);
+    }
+    .scroll-indicator span { font-size: 12px; letter-spacing: 0.15em; text-transform: uppercase; font-weight: 300; }
+    .scroll-indicator i { font-size: 14px; animation: bounce 2s infinite; }
+    @keyframes fadeSlideUp {
+      from { opacity: 0; transform: translateY(14px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.4; }
+    }
+    @keyframes bounce {
+      0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+      40% { transform: translateY(-8px); }
+      60% { transform: translateY(-4px); }
+    }
+    .features {
+      background: #000; padding: 96px 24px;
+      max-width: 1400px; margin: 0 auto;
+    }
+    .features-header { max-width: 640px; margin-bottom: 64px; }
+    .features-header .label {
+      color: rgba(255,255,255,0.3); font-size: 12px;
+      font-weight: 500; letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 12px;
+    }
+    .features-header h2 {
+      font-size: clamp(32px, 4vw, 48px); font-weight: 600;
+      line-height: 1.15; letter-spacing: -0.02em;
+    }
+    .features-header h2 .muted { color: rgba(255,255,255,0.4); }
+    .features-header p {
+      margin-top: 16px; color: rgba(255,255,255,0.45);
+      font-size: 16px; font-weight: 300; line-height: 1.6; max-width: 520px;
+    }
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+    @media (max-width: 1024px) {
+      .features-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 640px) {
+      .features-grid { grid-template-columns: 1fr; }
+    }
+    .feature-card {
+      position: relative; border-radius: 16px;
+      border: 1px solid rgba(255,255,255,0.1);
+      background: rgba(255,255,255,0.03); padding: 24px;
+      transition: all 0.3s ease; opacity: 0; transform: translateY(24px);
+    }
+    .feature-card.visible { opacity: 1; transform: translateY(0); }
+    .feature-card:hover {
+      border-color: rgba(255,255,255,0.25);
+      background: rgba(255,255,255,0.06);
+    }
+    .feature-tag {
+      display: inline-block; margin-bottom: 16px;
+      padding: 4px 10px; border-radius: 9999px;
+      background: rgba(255,255,255,0.1);
+      color: rgba(255,255,255,0.5); font-size: 12px;
+      font-weight: 500; letter-spacing: 0.05em;
+    }
+    .feature-icon {
+      display: flex; align-items: center; justify-content: center;
+      width: 44px; height: 44px; border-radius: 12px;
+      background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
+      margin-bottom: 16px; transition: border-color 0.3s;
+    }
+    .feature-card:hover .feature-icon { border-color: rgba(255,255,255,0.2); }
+    .feature-icon i { font-size: 20px; color: rgba(255,255,255,0.7); }
+    .feature-card h3 {
+      font-size: 16px; font-weight: 600; color: #fff;
+      margin-bottom: 8px; line-height: 1.4;
+    }
+    .feature-card p {
+      font-size: 14px; color: rgba(255,255
