@@ -1,104 +1,293 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AI Cash</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
-
-<style>
+📁 src/App.tsx
+import { BrowserRouter } from "react-router-dom";
+import { AppRoutes } from "./router";
+import { I18nextProvider } from "react-i18next";
+import i18n from "./i18n";
+function App() {
+  return (
+    <I18nextProvider i18n={i18n}>
+      <BrowserRouter basename={__BASE_PATH__}>
+        <AppRoutes />
+      </BrowserRouter>
+    </I18nextProvider>
+  );
+}
+export default App;
+📁 src/main.tsx
+import { StrictMode } from 'react'
+import './i18n'
+import { createRoot } from 'react-dom/client'
+import './index.css'
+import App from './App.tsx'
+createRoot(document.getElementById('root')!).render(
+  <StrictMode>
+    <App />
+  </StrictMode>,
+)
+📁 src/index.css
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 body {
-  margin: 0;
   font-family: 'Inter', sans-serif;
-  background: #f4f4f4;
-  color: #111;
+  -webkit-font-smoothing: antialiased;
+  background-color: #000;
 }
-
-header {
-  background: #000;
-  color: white;
-  padding: 20px;
-  text-align: center;
+.liquid-glass {
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.1);
+  position: relative;
+  overflow: hidden;
 }
-
-.container {
-  max-width: 900px;
-  margin: auto;
-  padding: 20px;
+.liquid-glass-light {
+  background: rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.12);
 }
-
-.card {
-  background: white;
-  padding: 20px;
-  margin: 15px 0;
-  border-radius: 12px;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+@keyframes fadeSlideUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
-
-h1, h2 {
-  margin: 0 0 10px;
+📁 src/router/config.tsx
+import type { RouteObject } from "react-router-dom";
+import NotFound from "../pages/NotFound";
+import Home from "../pages/home/page";
+const routes: RouteObject[] = [
+  {
+    path: "/",
+    element: <Home />,
+  },
+  {
+    path: "*",
+    element: <NotFound />,
+  },
+];
+export default routes;
+📁 src/router/index.ts
+import { useNavigate, type NavigateFunction } from "react-router-dom";
+import { useRoutes } from "react-router-dom";
+import { useEffect } from "react";
+import routes from "./config";
+let navigateResolver: (navigate: ReturnType<typeof useNavigate>) => void;
+declare global {
+  interface Window {
+    REACT_APP_NAVIGATE: ReturnType<typeof useNavigate>;
+  }
 }
-
-button {
-  padding: 12px 20px;
-  border: none;
-  border-radius: 999px;
-  background: black;
-  color: white;
-  cursor: pointer;
+export const navigatePromise = new Promise<NavigateFunction>((resolve) => {
+  navigateResolver = resolve;
+});
+export function AppRoutes() {
+  const element = useRoutes(routes);
+  const navigate = useNavigate();
+  useEffect(() => {
+    window.REACT_APP_NAVIGATE = navigate;
+    navigateResolver(window.REACT_APP_NAVIGATE);
+  });
+  return element;
 }
-
-button:hover {
-  background: #333;
+📁 src/i18n/index.ts
+import i18n from 'i18next';
+import { initReactI18next } from 'react-i18next';
+import LanguageDetector from 'i18next-browser-languagedetector';
+import messages from './local/index';
+i18n
+  .use(LanguageDetector)
+  .use(initReactI18next)
+  .init({
+    lng: 'en',
+    fallbackLng: 'en',
+    debug: false,
+    resources: messages,
+    interpolation: {
+      escapeValue: false,
+    },
+  });
+export default i18n;
+📁 src/i18n/local/index.ts
+const modules = import.meta.glob('./*/*.ts', { eager: true });
+const messages: Record<string, { translation: Record<string, string> }> = {};
+Object.keys(modules).forEach((path) => {
+  const match = path.match(/\.\/([^/]+)\/([^/]+)\.ts$/);
+  if (match) {
+    const [, lang] = match;
+    const module = modules[path] as { default?: Record<string, string> };
+  <br>
+    if (!messages[lang]) {
+      messages[lang] = { translation: {} };
+    }
+  <br>
+    if (module.default) {
+      messages[lang].translation = {
+        ...messages[lang].translation,
+        ...module.default
+      };
+    }
+  }
+});
+export default messages;
+📁 src/i18n/local/en/common.ts
+export const common = {
+  welcome: 'Welcome',
+};
+export default common;
+📁 src/pages/NotFound.tsx
+import { useLocation } from "react-router-dom";
+export default function NotFound() {
+  const location = useLocation();
+<br>
+  return (
+    <div className="relative flex flex-col items-center justify-center h-screen text-center px-4">
+      <h1 className="absolute bottom-0 text-9xl md:text-[12rem] font-black text-gray-50 select-none pointer-events-none z-0">
+        404
+      </h1>
+      <div className="relative z-10">
+        <h1 className="text-xl md:text-2xl font-semibold mt-6">This page has not been generated</h1>
+        <p className="mt-2 text-base text-gray-400 font-mono">{location.pathname}</p>
+        <p className="mt-4 text-lg md:text-xl text-gray-500">Tell me more about this page, so I can generate it</p>
+      </div>
+    </div>
+  );
 }
-
-/* Anuncio */
-.ad-box {
-  background: #ddd;
-  text-align: center;
-  padding: 30px;
-  border-radius: 10px;
-  margin: 20px 0;
+📁 src/pages/home/page.tsx
+import Navbar from './components/Navbar';
+import Hero from './components/Hero';
+import Features from './components/Features';
+import AdsSection from './components/AdsSection';
+import Footer from './components/Footer';
+export default function Home() {
+  return (
+    <main className="bg-black min-h-screen font-sans">
+      <section>
+        <Navbar />
+      </section>
+      <section>
+        <Hero />
+      </section>
+      <section id="tools">
+        <Features />
+      </section>
+      <section>
+        <AdsSection />
+      </section>
+      <section>
+        <Footer />
+      </section>
+    </main>
+  );
 }
-</style>
-
-</head>
-
-<body>
-
-<header>
-  <h1>AI Cash</h1>
-  <p>Gana dinero con inteligencia artificial</p>
-</header>
-
-<div class="container">
-
-  <div class="card">
-    <h2>💰 Cómo ganar dinero con IA</h2>
-    <p>Descubre formas reales de generar ingresos usando herramientas de inteligencia artificial en 2026.</p>
-  </div>
-
-  <div class="card">
-    <h2>🧠 Ideas de negocio</h2>
-    <ul>
-      <li>Crear contenido con IA</li>
-      <li>Automatizar tareas</li>
-      <li>Vender servicios digitales</li>
-    </ul>
-  </div>
-
-  <div class="ad-box">
-    Aquí irá tu anuncio de AdSense
-  </div>
-
-  <div class="card">
-    <h2>🚀 Empieza hoy</h2>
-    <p>El mejor momento para empezar es ahora. No necesitas experiencia, solo constancia.</p>
-    <button>Aprender más</button>
-  </div>
-
-</div>
-
-</body>
-</html>
+📁 src/pages/home/components/Navbar.tsx
+import { useState, useEffect } from 'react';
+const NAV_LINKS = ['Métodos', 'Herramientas', 'Guías', 'Blog'];
+export default function Navbar() {
+  const [scrolled, setScrolled] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 40);
+    window.addEventListener('scroll', onScroll);
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+  return (
+    <header
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
+        scrolled ? 'liquid-glass border-b border-white/10' : 'bg-transparent'
+      }`}
+    >
+      <nav className="px-6 md:px-12 lg:px-16 pt-5 pb-4 flex items-center justify-between gap-4">
+        <a href="/" className="flex items-center gap-2 shrink-0 cursor-pointer">
+          <img
+            src="https://public.readdy.ai/ai/img_res/87e5e8ee-55fa-4259-bc4f-3d09e4c50e18.png"
+            alt="AI Cash Logo"
+            className="h-8 w-8 object-contain rounded-sm"
+          />
+          <span className="text-white font-semibold text-base tracking-widest uppercase">
+            AI CASH
+          </span>
+        </a>
+        <ul className="hidden md:flex items-center gap-8">
+          {NAV_LINKS.map((link) => (
+            <li key={link}>
+              <a
+                href={`#${link.toLowerCase()}`}
+                className="text-white/70 hover:text-white text-sm font-medium tracking-wide transition-colors duration-200 whitespace-nowrap cursor-pointer"
+              >
+                {link}
+              </a>
+            </li>
+          ))}
+        </ul>
+        <div className="flex items-center gap-3">
+          <a
+            href="#start"
+            className="hidden sm:inline-flex items-center gap-2 px-5 py-2 rounded-full bg-white text-black text-sm font-semibold tracking-wide hover:bg-white/90 transition-colors duration-200 whitespace-nowrap cursor-pointer"
+          >
+            Empieza Ahora
+          </a>
+          <button
+            className="md:hidden flex items-center justify-center w-9 h-9 text-white cursor-pointer"
+            onClick={() => setMenuOpen((prev) => !prev)}
+            aria-label="Toggle menu"
+          >
+            <i className={`ri-${menuOpen ? 'close' : 'menu'}-line text-xl`} />
+          </button>
+        </div>
+      </nav>
+      {menuOpen && (
+        <div className="md:hidden liquid-glass border-t border-white/10 px-6 pb-5 pt-3 flex flex-col gap-4">
+          {NAV_LINKS.map((link) => (
+            <a
+              key={link}
+              href={`#${link.toLowerCase()}`}
+              onClick={() => setMenuOpen(false)}
+              className="text-white/70 hover:text-white text-sm font-medium tracking-wide transition-colors duration-200 cursor-pointer"
+            >
+              {link}
+            </a>
+          ))}
+          <a
+            href="#start"
+            onClick={() => setMenuOpen(false)}
+            className="mt-2 inline-flex items-center justify-center px-5 py-2 rounded-full bg-white text-black text-sm font-semibold whitespace-nowrap cursor-pointer"
+          >
+            Empieza Ahora
+          </a>
+        </div>
+      )}
+    </header>
+  );
+}
+📁 src/pages/home/components/Hero.tsx
+import { useEffect, useState } from 'react';
+import AnimatedHeading from './AnimatedHeading';
+interface FadeState {
+  sub: boolean;
+  buttons: boolean;
+  tag: boolean;
+}
+export default function Hero() {
+  const [fade, setFade] = useState<FadeState>({ sub: false, buttons: false, tag: false });
+  useEffect(() => {
+    const t1 = setTimeout(() => setFade((p) => ({ ...p, sub: true })), 800);
+    const t2 = setTimeout(() => setFade((p) => ({ ...p, buttons: true })), 1200);
+    const t3 = setTimeout(() => setFade((p) => ({ ...p, tag: true })), 1400);
+    return () => { clearTimeout(t1); clearTimeout(t2); clearTimeout(t3); };
+  }, []);
+  const fadeStyle = (visible: boolean): React.CSSProperties => ({
+    opacity: visible ? 1 : 0,
+    transform: visible ? 'translateY(0)' : 'translateY(14px)',
+    transition: 'opacity 600ms ease, transform 600ms ease',
+  });
+  return (
+    <section className="relative w-full min-h-screen flex flex-col">
+      <video
+        className="absolute inset-0 w-full h-full object-cover"
+        src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260403_050628_c4e32401-fab4-4a27-b7a8-6e9291cd5959.mp4"
+        autoPlay
+        loop
+        muted
+        playsInline
+      />
+      <div className="relative z-10 flex flex-col just
